@@ -7,11 +7,14 @@
 #include "texture3d.hpp"
 #include "worldgen.hpp"
 #include <iostream>
+#include <glm/geometric.hpp>
+#include <cstdlib>
 void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
     glViewport(0, 0, width, height);
 }
 
+glm::vec3 pos={64,64,64}, cam={0,0,1};
 void processInput(GLFWwindow *window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -19,15 +22,29 @@ void processInput(GLFWwindow *window)
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
+        pos+=cam;
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-    {
+    {   
+        pos-=cam;
+
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
     {
+        
+        
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
     {
+        
+    }
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+    {
+        pos += glm::vec3(0,1,0);
+    }
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+    {
+        pos += glm::vec3(0,-1,0);
     }
 }
 void GLAPIENTRY
@@ -85,8 +102,12 @@ int main(int argc, char *argv[], char *envp[])
         processInput(window);
         glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        baseShader.setInt("time", i);
-        i=time(NULL)%32;
+        std::cerr << pos.x << " " <<pos.y << " " << pos.z << '\n';
+        baseShader.setFloat3("pos", pos);
+        baseShader.setFloat3("cam", cam);
+        baseShader.setInt("FOV", 60);
+        baseShader.setInt2("screen_size", {800, 600});
+        baseShader.setInt3("map_size", {128, 128, 128});
         screen.render();
         glfwSwapBuffers(window);
         glfwPollEvents();

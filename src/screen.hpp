@@ -10,7 +10,7 @@ class Screen: public Object {
     public:
     Screen()
     {   
-        m_texture=new Texture3D(32,32,32);
+        m_texture=new Texture3D(128,128,128);
         constexpr float vertices[] = {
             -1.0f,  1.0f, 0.0f,
              1.0f,  1.0f, 0.0f,

@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <glm/vec2.hpp>
 class Shader
 {
 
@@ -89,6 +90,22 @@ public:
     void setInt(std::string name, int value)
     {
         glUniform1i(glGetUniformLocation(m_program, name.c_str()), value);
+    }
+    void setInt2(std::string name, glm::ivec2 value)
+    {
+        glUniform2i(glGetUniformLocation(m_program, name.c_str()), value.x, value.y);
+    }
+    void setInt3(std::string name, glm::ivec3 value)
+    {
+        glUniform3i(glGetUniformLocation(m_program, name.c_str()), value.x, value.y, value.z);
+    }
+    void setFloat2(std::string name, glm::vec2 value)
+    {
+        glUniform2f(glGetUniformLocation(m_program, name.c_str()), value.x, value.y);
+    }
+    void setFloat3(std::string name, glm::vec3 value)
+    {
+        glUniform3f(glGetUniformLocation(m_program, name.c_str()), value.x, value.y, value.z);
     }
 private:
     unsigned int m_program;
