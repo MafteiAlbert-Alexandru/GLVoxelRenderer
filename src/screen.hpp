@@ -8,9 +8,9 @@
 
 class Screen: public Object {
     public:
-    Screen()
+    Screen(Texture3D * texture)
     {   
-        m_texture=new Texture3D(128,128,128);
+        m_texture=texture;
         constexpr float vertices[] = {
             -1.0f,  1.0f, 0.0f,
              1.0f,  1.0f, 0.0f,

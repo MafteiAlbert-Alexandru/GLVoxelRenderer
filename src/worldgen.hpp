@@ -2,11 +2,13 @@
 #define WORLDGEN_H
 #include <PerlinNoise.hpp>
 #include "texture3d.hpp"
+#include <cstdlib>
 class WorldGen
 {
 public:
     static void generate(Texture3D *tex, long double density, int octaves, siv::PerlinNoise::seed_type seed = 0)
-    {
+    {   
+        seed=time(NULL);
         const siv::BasicPerlinNoise<float> perlin{seed};
         for(int i=0;i<tex->m_width;i++)
             for(int j=0;j<tex->m_height;j++)

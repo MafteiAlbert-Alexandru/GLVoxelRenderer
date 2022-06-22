@@ -46,17 +46,10 @@ void main()
     vec3 t_delta = 1/ray*step;
     uvec4 color;
     int steps=0;
-    if(gl_FragCoord.x<64&& gl_FragCoord.y<64)
-    {
-        if(abs(gl_FragCoord.xy/2-pos.xz).x<1 && abs(gl_FragCoord.xy/2-pos.xz).y <1)
-            FragColor=vec4(0,1,0,1);
-        else FragColor = vec4(texelFetch(input_tex, ivec3(gl_FragCoord.xy/2, pos.y),
-         0).xyz/MAX_UINT,1);
-    }else {
-        //FragColor=vec4(ray, 1);
+        
         
 
-while(!found&&steps<=128)
+    while(!found&&steps<=256)
     {
         steps++;
         if(t_max.x<t_max.y)
@@ -86,7 +79,7 @@ while(!found&&steps<=128)
     }
     if(found)
         FragColor=vec4(color.x/MAX_UINT,color.y/MAX_UINT,color.z/MAX_UINT,1);
-    else FragColor=vec4(1,0,0,1);
-    }
+    else FragColor=vec4(0,0,0,1);
+    
     
 } 

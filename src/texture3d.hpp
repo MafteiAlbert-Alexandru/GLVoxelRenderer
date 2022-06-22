@@ -44,8 +44,12 @@ public:
     {
         glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
     }
-    unsigned int m_width, m_height, m_depth;
+    const glm::vec3 size()
+    {
+        return {m_width, m_height, m_depth};
+    }
 
+    unsigned int m_width, m_height, m_depth;
 private:
     unsigned int m_texture;
 
