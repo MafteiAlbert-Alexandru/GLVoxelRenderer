@@ -7,3 +7,6 @@
 [submodule "lib/PerlinNoise"]
 	path = lib/PerlinNoise
 	url = https://github.com/Reputeless/PerlinNoise
+[submodule "lib/FreeType"]
+	path = lib/FreeType
+	url = https://gitlab.freedesktop.org/freetype/freetype.git

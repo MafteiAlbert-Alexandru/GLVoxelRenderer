@@ -30,47 +30,38 @@ void main()
     vec3 ray = normalize(vector_to_point);
     
     bool found = false;
-    ivec3 map = ivec3(pos);
-    ivec3 step = ivec3(1,1,1);
-    vec3 side_dist;
-    
-    if(ray.x<0) 
-        step.x=-1;
-    if(ray.y<0) 
-        step.y=-1;
-    if(ray.z<0) 
-        step.z=-1;
-    
-    vec3 next_voxel_boundry = map+step;
-    vec3 t_max = (next_voxel_boundry-pos)/ray;
-    vec3 t_delta = 1/ray*step;
+    ivec3 map = ivec3(floor(pos));
+    ivec3 step = ivec3(sign(ray));
+    vec3 delta_dist = abs(1/ray);
+    vec3 side_dist = (sign(ray) * (vec3(map)-pos)+sign(ray)*0.5 + 0.5) * delta_dist;
     uvec4 color;
-    int steps=0;
-        
-        
-
-    while(!found&&steps<=256)
+    for(int i=0;!found&&i<=256;i++)
     {
-        steps++;
-        if(t_max.x<t_max.y)
-        {
-            if(t_max.x<t_max.z) {
-                map.x+=step.x;
-                t_max.x += t_delta.x;
-            }else {
-                map.z +=step.z;
-                t_max.z+=t_delta.z;
-            }
-        }else {
-            if(t_max.y < t_max.z) {
-                map.y+=step.y;
-                t_max.y+=t_delta.y;
-            }else {
-                map.z+=step.z;
-                t_max.z+=t_delta.z;
-            }
-        }
-        if(!(map.x >= map_size.x || map.y >=map_size.y || map.z >= map_size.z || map.x<0 || map.y<0 || map.z<0))
+        if (side_dist.x < side_dist.y) {
+				if (side_dist.x < side_dist.z) {
+					side_dist.x += delta_dist.x;
+					map.x += step.x;
+					//mask = bvec3(true, false, false);
+				}
+				else {
+					side_dist.z += delta_dist.z;
+					map.z += step.z;
+					//mask = bvec3(false, false, true);
+				}
+			}
+			else {
+				if (side_dist.y < side_dist.z) {
+					side_dist.y += delta_dist.y;
+					map.y += step.y;
+					//mask = bvec3(false, true, false);
+				}
+				else {
+					side_dist.z += delta_dist.z;
+					map.z += step.z;
+					//mask = bvec3(false, false, true);
+				}
+			}
+            if(!(map.x >= map_size.x || map.y >=map_size.y || map.z >= map_size.z || map.x<0 || map.y<0 || map.z<0))
         {
             color = texelFetch(input_tex, map, 0);
             if(color.x+color.y+color.z>0u)
