@@ -94,11 +94,12 @@ public:
             glm::vec2 delta = {xpos - lastxpos, ypos - lastypos};
             lastxpos = xpos;
             lastypos = ypos;
-            
+            if((m_rotation+delta * m_sensitivity * ((float)delta_time)).y > 80 || (m_rotation+delta * m_sensitivity * ((float)delta_time)).y < -80)
+                return;
             m_rotation += delta * m_sensitivity * ((float)delta_time);
             m_cam = glm::rotate({1, 0, 0}, -glm::radians(m_rotation.x), glm::vec3(0, 1, 0));
             m_cam = glm::rotate(m_cam, glm::radians(m_rotation.y), glm::normalize(glm::cross({0, 1, 0}, m_cam)));
-            std::cerr<<"cam: " << m_cam.x << " " << m_cam.y << " "  << m_cam.z << '\n';
+            std::cerr<<"cam: " << m_rotation.x << " " << m_rotation.y << '\n';
         }
         
     }

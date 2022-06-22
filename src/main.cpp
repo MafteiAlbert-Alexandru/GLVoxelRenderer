@@ -82,9 +82,14 @@ int main(int argc, char *argv[], char *envp[])
         player.input(window);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+        glm::vec3 camera_plan_vector = player.getCamera() * (screen_size.x/2.0f)*((float)glm::tan(glm::radians(90/2.0)));
+        glm::vec3 camera_plan_surface_right_vector = glm::normalize(glm::cross(glm::vec3(0,-1,0), camera_plan_vector));
+        glm::vec3 camera_plan_surface_up_vector = glm::normalize(glm::cross(camera_plan_surface_right_vector, camera_plan_vector));
+        baseShader.setFloat3("camera_plan_vector", camera_plan_vector);
+        baseShader.setFloat3("camera_plan_surface_right_vector", camera_plan_surface_right_vector);
+        baseShader.setFloat3("camera_plan_surface_up_vector", camera_plan_surface_up_vector);
         baseShader.setFloat3("pos", player.getPosition());
         baseShader.setFloat3("cam", player.getCamera());
-        baseShader.setInt("FOV", 90);
         baseShader.setInt2("screen_size", screen_size);
         baseShader.setInt3("map_size", texture.size());
         screen.render();
