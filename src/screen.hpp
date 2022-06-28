@@ -5,12 +5,12 @@
 #include "shader.hpp"
 #include "object.hpp"
 #include "texture3d.hpp"
-
+#include "octree.hpp"
 class Screen: public Object {
     public:
-    Screen(Texture3D * texture)
+    Screen(Octree * octree)
     {   
-        m_texture=texture;
+        m_octree=octree;
         constexpr float vertices[] = {
             -1.0f,  1.0f, 0.0f,
              1.0f,  1.0f, 0.0f,
@@ -42,12 +42,12 @@ class Screen: public Object {
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glActiveTexture(GL_TEXTURE0);
-        m_texture->bind();
+        m_octree->bind();
         m_shader->use();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         
     }
-    Texture3D *m_texture;
+    Octree *m_octree;
 };
 
 #endif

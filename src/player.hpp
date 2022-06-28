@@ -34,38 +34,38 @@ public:
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         {
             m_pos += m_cam * ((float)delta_time) * speed;
-            std::cerr << m_pos.x << " " << m_pos.y << " " << m_pos.z;
-            std::cerr << '\n' << floor(m_pos.x) << " " << floor(m_pos.y) << " " << floor(m_pos.z) <<'\n';
+            //std::cerr << m_pos.x << " " << m_pos.y << " " << m_pos.z;
+            //std::cerr << '\n' << floor(m_pos.x) << " " << floor(m_pos.y) << " " << floor(m_pos.z) <<'\n';
         }
         if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
         {
             m_pos -= m_cam * ((float)delta_time) * speed;
-            std::cerr << m_pos.x << " " << m_pos.y << " " << m_pos.z;
-            std::cerr << '\n' << floor(m_pos.x) << " " << floor(m_pos.y) << " " << floor(m_pos.z) <<'\n';
+            //std::cerr << m_pos.x << " " << m_pos.y << " " << m_pos.z;
+            //std::cerr << '\n' << floor(m_pos.x) << " " << floor(m_pos.y) << " " << floor(m_pos.z) <<'\n';
         }
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
         {
             m_pos += glm::normalize(glm::cross(glm::vec3(0, 1, 0), m_cam)) * ((float)delta_time) * speed;
-            std::cerr << m_pos.x << " " << m_pos.y << " " << m_pos.z;
-            std::cerr << '\n' << floor(m_pos.x) << " " << floor(m_pos.y) << " " << floor(m_pos.z) <<'\n';
+            //std::cerr << m_pos.x << " " << m_pos.y << " " << m_pos.z;
+            //std::cerr << '\n' << floor(m_pos.x) << " " << floor(m_pos.y) << " " << floor(m_pos.z) <<'\n';
         }
         if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         {
             m_pos += glm::normalize(glm::cross(m_cam, glm::vec3(0, 1, 0))) * ((float)delta_time) * speed;
-            std::cerr << m_pos.x << " " << m_pos.y << " " << m_pos.z;
-            std::cerr << '\n' << floor(m_pos.x) << " " << floor(m_pos.y) << " " << floor(m_pos.z) <<'\n';
+            //std::cerr << m_pos.x << " " << m_pos.y << " " << m_pos.z;
+            //std::cerr << '\n' << floor(m_pos.x) << " " << floor(m_pos.y) << " " << floor(m_pos.z) <<'\n';
         }
         if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
         {
             m_pos += glm::vec3(0, 1, 0) * ((float)delta_time) * speed;
-            std::cerr << m_pos.x << " " << m_pos.y << " " << m_pos.z;
-            std::cerr << '\n' << floor(m_pos.x) << " " << floor(m_pos.y) << " " << floor(m_pos.z) <<'\n';
+            //std::cerr << m_pos.x << " " << m_pos.y << " " << m_pos.z;
+            //std::cerr << '\n' << floor(m_pos.x) << " " << floor(m_pos.y) << " " << floor(m_pos.z) <<'\n';
         }
         if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
         {
             m_pos += glm::vec3(0, -1, 0) * ((float)delta_time) * speed;
-            std::cerr << m_pos.x << " " << m_pos.y << " " << m_pos.z;
-            std::cerr << '\n' << floor(m_pos.x) << " " << floor(m_pos.y) << " " << floor(m_pos.z) <<'\n';
+            //std::cerr << m_pos.x << " " << m_pos.y << " " << m_pos.z;
+            //std::cerr << '\n' << floor(m_pos.x) << " " << floor(m_pos.y) << " " << floor(m_pos.z) <<'\n';
         }
         if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
         {
@@ -99,7 +99,7 @@ public:
             m_rotation += delta * m_sensitivity * ((float)delta_time);
             m_cam = glm::rotate({1, 0, 0}, -glm::radians(m_rotation.x), glm::vec3(0, 1, 0));
             m_cam = glm::rotate(m_cam, glm::radians(m_rotation.y), glm::normalize(glm::cross({0, 1, 0}, m_cam)));
-            std::cerr<<"cam: " << m_rotation.x << " " << m_rotation.y << '\n';
+            //std::cerr<<"cam: " << m_rotation.x << " " << m_rotation.y << '\n';
         }
         
     }

@@ -1,7 +1,7 @@
 #version 330 core
 out vec4 FragColor;
-uniform usampler2DArray input_tex;
-
+uniform usamplerBuffer input_tex;
+uniform ivec3 input_size;
 // Vector to position of the camera
 uniform vec3 pos;
 
@@ -15,14 +15,52 @@ uniform ivec2 screen_size;
 
 bool is_in_bounds(in ivec3 point)
 {
-    ivec3 map_size=textureSize(input_tex, 0);
+    ivec3 map_size=input_size;
     return !(point.x >= map_size.x || point.y >=map_size.y || point.z >= map_size.z || point.x<0 || point.y<0 || point.z<0);
 }
+const uint max_depth = 10u;
 
 // TODO: Implement octree
-uvec4 get_data(ivec3 point)
+uvec4 get_data(in ivec3 coordinates)
 {
-    return texelFetch(input_tex, point, 0);
+    uvec4 data=uvec4(0,0,0,0);
+    if(is_in_bounds(coordinates))
+    {
+        int index=0;
+        ivec3 box=input_size;
+        for(uint i=0u;i<max_depth;i++)
+        {
+            uint offset = uint(coordinates.x < box.x / 2) | (uint(coordinates.y < box.y / 2) << 1) | (uint(coordinates.z < box.z / 2) << 2);
+            uvec4 temp_data = texelFetch(input_tex, index+int(offset));
+            coordinates.x -= int((offset & 1u) != 1u) * box.x / 2;
+            coordinates.y -= int((offset & 2u) != 2u) * box.y / 2;
+            coordinates.z -= int((offset & 4u) != 4u) * box.z / 2;
+            
+            if(temp_data.w==0u)
+            {
+                
+                if(temp_data.x+temp_data.y+temp_data.z>0u)
+                {
+                    index = int((temp_data.x << 16u) | (temp_data.y <<8u) | temp_data.z);
+                    /*if(index>128)
+                    {
+                        float DIV=9.0;
+                        data=uvec4(temp_data.x,temp_data.y,float(temp_data.z)/DIV,1);
+                        return  data;
+                    }*/
+                }else {
+                   
+                    return data;
+                }
+            }else {
+                data=temp_data;
+                return data;
+            }
+            box/=2;
+
+        }
+    }
+    return data;
 }
 
 bool _ray_hit_voxel;
@@ -49,7 +87,7 @@ ray_results ray(in vec3 pos, in vec3 dir)
     vec3 delta_dist = abs(1/dir);
     vec3 side_dist = (sign(dir)*(vec3(map)-pos+0.5)+0.5) * delta_dist;
     bvec3 mask;
-    for(int i=0; !results.hit && i <=MAX_STEPS; i++)
+    for(int i=0;!results.hit && i <=MAX_STEPS; i++)
     {
         if (side_dist.x < side_dist.y) {
 			if (side_dist.x < side_dist.z) {
@@ -85,6 +123,8 @@ ray_results ray(in vec3 pos, in vec3 dir)
             }
         }
     }
+    //FragColor = vec4(float(i)/10.0,0,0,1);
+
     return results;
 }
 
@@ -92,20 +132,19 @@ ray_results ray(in vec3 pos, in vec3 dir)
 
 void main()
 {
-
-
-    float MAX_UINT=4294967295.0;
+    float MAX_UINT=255.0;
+    
     vec2 camera_plan_position = (2*gl_FragCoord.xy/screen_size-vec2(1,1));
     vec3 camera_point = camera_plan_position.x*camera_plan_surface_right_vector + camera_plan_position.y*camera_plan_surface_up_vector;
     vec3 vector_to_point = camera_plan_vector+camera_point*800;
 
     ray_results results =ray(pos, normalize(vector_to_point));
 
-
+    //FragColor=vec4(get_data(ivec3(0,0,0)).xyz,1);
 
     if(results.hit)
         FragColor=vec4(results.data.xyz/MAX_UINT, 1);
     else FragColor=vec4(0,0,0,1);
-    
+  
     
 } 
