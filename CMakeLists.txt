@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.3)
-project(VoxelRenderer VERSION 1.0) 
+project(GLVoxelRenderer VERSION 1.0) 
 set(CXX_STANDARD 11)
 #set(CMAKE_BUILD_TYPE Debug)
 if ( ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR} )

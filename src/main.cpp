@@ -68,7 +68,7 @@ int main(int argc, char *argv[], char *envp[])
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     Player player;
     Shader baseShader("shd/shader.vs", NULL, "shd/shader.fs");
-    Octree octree({512, 512, 512});
+    Octree octree({256, 256, 256});
     Screen screen(&octree);
     screen.setShader(&baseShader);
     baseShader.use();
